@@ -1,0 +1,7 @@
+
+/build/
+/.gradle/
+/JunProject.iml
+
+/.idea/
+/local.properties

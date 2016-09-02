@@ -1,0 +1,294 @@
+package com.junwen.jlibrary;
+
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
+
+/**
+ * 描述:关于屏幕的工具类
+ * 作者:卜俊文
+ * 邮箱:344176791@qq.com
+ * 创建时间: 2016/8/11 16:07
+ */
+public class JScreenUtils {
+
+    /**
+     * 描述:设置界面透明度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/9/1 9:45
+     */
+    public static void backgroundAlpha(Activity activity, float bgAlpha) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 描述: 获得屏幕高度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:07
+     */
+    public static int getScreenWidth(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.widthPixels;
+    }
+
+    /**
+     * 描述: 获得屏幕宽度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static int getScreenHeight(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels;
+    }
+
+    /**
+     * 描述::获得状态栏的高度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static int getStatusHeight(Context context) {
+
+        int statusHeight = -1;
+        try {
+            Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height")
+                    .get(object).toString());
+            statusHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return statusHeight;
+    }
+
+    /**
+     * 描述:获取当前屏幕截图，包含状态栏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static Bitmap snapShotWithStatusBar(Activity activity) {
+        View view = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bmp = view.getDrawingCache();
+        int width = getScreenWidth(activity);
+        int height = getScreenHeight(activity);
+        Bitmap bp = null;
+        bp = Bitmap.createBitmap(bmp, 0, 0, width, height);
+        view.destroyDrawingCache();
+        return bp;
+
+    }
+
+    /**
+     * 描述:获取当前屏幕截图，不包含状态栏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static Bitmap snapShotWithoutStatusBar(Activity activity) {
+        View view = activity.getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bmp = view.getDrawingCache();
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        int statusBarHeight = frame.top;
+
+        int width = getScreenWidth(activity);
+        int height = getScreenHeight(activity);
+        Bitmap bp = null;
+        bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, width, height
+                - statusBarHeight);
+        view.destroyDrawingCache();
+        return bp;
+
+    }
+
+    /**
+     * 描述:获取View的坐标,根据指定View，返回View的坐标点
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static int[] getViewForXY(View view) {
+        int str[] = new int[2];
+        view.getLocationOnScreen(str);
+        return str;
+    }
+
+    /**
+     * 描述:去除标题栏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static void system_NoTitle(Context context) {
+        ((Activity) context).requestWindowFeature(1);
+    }
+
+    /**
+     * 描述:全屏显示
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static void system_FullScreen(Context context) {
+        ((Activity) context).getWindow().setFlags(1024, 1024);
+    }
+
+    /**
+     * 描述:根据传入的View，返回此View的宽高，此方法可用在一些获取不到宽高的地方
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:08
+     */
+    public static int[] getWidthAndHeightforView(View view) {
+        int[] i = new int[2];
+        int w = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0,
+                View.MeasureSpec.UNSPECIFIED);
+        view.measure(w, h);
+        i[0] = view.getMeasuredWidth();
+        i[1] = view.getMeasuredHeight();
+        return i;
+    }
+
+    /**
+     * 描述:精确获取屏幕尺寸（例如：3.5、4.0、5.0寸屏幕）
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 16:09
+     */
+    public static double getScreenPhysicalSize(Activity ctx) {
+        DisplayMetrics dm = new DisplayMetrics();
+        ctx.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        double diagonalPixels = Math.sqrt(Math.pow(dm.widthPixels, 2)
+                + Math.pow(dm.heightPixels, 2));
+        return diagonalPixels / (160 * dm.density);
+
+    }
+
+    /**
+     * 描述:判断是否是平板
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/11 15:58
+     */
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    /**
+     * 描述:判断是否开启了自动亮度调节
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static boolean isAutoBrightness(Activity activity) {
+        boolean isAutoAdjustBright = false;
+        try {
+            isAutoAdjustBright = Settings.System.getInt(
+                    activity.getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return isAutoAdjustBright;
+    }
+
+    /**
+     * 描述:获取屏幕的亮度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static int getScreenBrightness(Activity activity) {
+        int brightnessValue = 0;
+        try {
+            brightnessValue = android.provider.Settings.System.getInt(
+                    activity.getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return brightnessValue;
+    }
+
+    /**
+     * 描述: 设置屏幕亮度
+     * ScreenUtils.setBrightness(MyBusinessCardActivity.this,254); //设置亮度成254，0 - 255范围
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static void setBrightness(Activity activity, int brightness) {
+        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+        lp.screenBrightness = Float.valueOf(brightness) * (1f / 255f);
+        activity.getWindow().setAttributes(lp);
+    }
+
+    /**
+     * 描述:关闭亮度自动调节
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static void stopAutoBrightness(Activity activity) {
+        Settings.System.putInt(activity.getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+    }
+
+    /**
+     * 描述: 开启亮度自动调节
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static void startAutoBrightness(Activity activity) {
+        Settings.System.putInt(activity.getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);
+    }
+
+    /**
+     * 描述:保存亮度设置状态
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/8/19 16:43
+     */
+    public static void saveBrightness(Activity activity, int brightness) {
+        Uri uri = android.provider.Settings.System
+                .getUriFor("screen_brightness");
+        ContentResolver resolver = activity.getContentResolver();
+        android.provider.Settings.System.putInt(resolver, "screen_brightness",
+                brightness);
+        resolver.notifyChange(uri, null);
+    }
+
+
+}
