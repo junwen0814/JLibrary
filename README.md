@@ -20,7 +20,7 @@ allprojects {
 ####app.build.gradle
 ```
 dependencies {
-    compile 'com.junwen.jlibrary:JLibrary:1.0.1'
+    compile 'com.junwen.jlibrary:JLibrary:1.0.2'
 }
 ```
 
@@ -28,7 +28,7 @@ dependencies {
 ####app.build.gradle
 ```
 dependencies {
-    compile 'com.junwen.jlibrary:JLibrary:1.0.1'
+    compile 'com.junwen.jlibrary:JLibrary:1.0.2'
 }
 ```
 
