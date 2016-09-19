@@ -2,20 +2,36 @@ package com.junwen.utils;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.junwen.jlibrary.JBitmapUtils;
+import com.junwen.jlibrary.JCheckPasswordUtils;
 import com.junwen.utils.junmaster.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ImageView viewById = (ImageView) findViewById(R.id.activity_img);
-        if (viewById != null) {
-            viewById.setImageDrawable(JBitmapUtils.getFilletDrawable(getApplicationContext(), R.drawable.ic_chat_voice_rcd_cancel));
+        password = (EditText) findViewById(R.id.activity_main);
+    }
+
+    public void onCheckPass(View view) {
+        JCheckPasswordUtils.LEVEL passwordLevel = JCheckPasswordUtils.getPasswordLevel(password.getText().toString().trim());
+        if (passwordLevel == JCheckPasswordUtils.LEVEL.EASY) {
+            Toast.makeText(getApplicationContext(), "简单", Toast.LENGTH_SHORT).show();
+        } else if (passwordLevel == JCheckPasswordUtils.LEVEL.MIDIUM) {
+            Toast.makeText(getApplicationContext(), "中级", Toast.LENGTH_SHORT).show();
+        } else if (passwordLevel == JCheckPasswordUtils.LEVEL.STRONG) {
+            Toast.makeText(getApplicationContext(), "安全高", Toast.LENGTH_SHORT).show();
+        } else if (passwordLevel == JCheckPasswordUtils.LEVEL.VERY_STRONG) {
+            Toast.makeText(getApplicationContext(), "非常高", Toast.LENGTH_SHORT).show();
+        } else if (passwordLevel == JCheckPasswordUtils.LEVEL.EXTREMELY_STRONG) {
+            Toast.makeText(getApplicationContext(), "极高", Toast.LENGTH_SHORT).show();
         }
     }
 }
