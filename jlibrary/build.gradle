@@ -1,7 +1,9 @@
 apply plugin: 'com.android.library'
+// JitPack Maven
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-version = "1.0.0" //需更改，执行gradlew bintrayUpload上传
+// Your Group
+group='com.github.junwen0814'
+
 android {
     compileSdkVersion 23
     buildToolsVersion "24.0.0"
@@ -12,9 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    lintOptions {
-        abortOnError false
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,74 +27,4 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-}
-//下面到结尾都是需要添加的
-def siteUrl = 'https://github.com/junwen0814/JunLibrary'      // 可默认，项目的主页
-def gitUrl = 'https://github.com/junwen0814/JunLibrary'   //可默认， Git仓库的url
-group = "com.junwen.jlibrary" // 需更改，这个就是Library最后生成出来的包名，最后会成为这样：compile 'com.junwen.mytool:mytool:1.0.0'
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                // Add your description here
-                description 'my utils for test'
-                name 'This is my utils'  // 可默认，项目描述
-                url siteUrl
-                // Set your license
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer { //  可默认，开发者信息
-                        id 'junwen'
-                        name 'junwenE'
-                        email '344176791@qq.com'
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-                }
-            }
-        }
-    }
-}
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-task javadoc(type: Javadoc) {
-    options.encoding = 'UTF-8'
-    source = 'src/main/java'
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
-Properties properties = new Properties()
-// 加载本地配置
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    pkg {
-        repo = "maven"  //发布到Bintray的那个仓库里，默认账户有四个库，我们这里上传到maven库
-        name = "jlibrary"  //需更改，这个名字就是你在Bintray上创建Package的名字，这里会查询，如果此包不存在就会创建一个。
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
-        publish = true
-    }
 }
