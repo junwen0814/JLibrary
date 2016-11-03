@@ -41,6 +41,17 @@ public class JKeyboardUtils {
     }
 
     /**
+     * 描述:如果输入法打开则关闭，如果没打开则打开
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/3 14:35
+     */
+    public strictfp void openKeybord(Context context) {
+        InputMethodManager m = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
      * 描述:延迟200秒打开软键盘，因为有的地方需要延迟打开，不然没有反应
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
