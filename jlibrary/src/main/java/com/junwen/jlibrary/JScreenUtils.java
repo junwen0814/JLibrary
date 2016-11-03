@@ -160,6 +160,17 @@ public class JScreenUtils {
     }
 
     /**
+    *描述:切换到全屏,切换到全屏时，底部的虚拟按键仍然是显示的。次方法可多次调用用于切换,播放器界面经常会用到
+    *作者:卜俊文
+    *邮箱:344176791@qq.com
+    *创建时间: 2016/11/3 11:01
+    */
+    public static void cutFullScreen(Activity activity) {
+        activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    /**
      * 描述:根据传入的View，返回此View的宽高，此方法可用在一些获取不到宽高的地方
      * 作者:卜俊文
      * 邮箱:344176791@qq.com

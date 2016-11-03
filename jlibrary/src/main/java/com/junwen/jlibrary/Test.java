@@ -2,6 +2,10 @@ package com.junwen.jlibrary;
 
 import java.util.Date;
 
+import static com.junwen.jlibrary.JDateUtils.DATA_TYPE_DAY;
+import static com.junwen.jlibrary.JDateUtils.DATA_TYPE_MONTH;
+import static com.junwen.jlibrary.JDateUtils.getWeekByYear;
+
 /**
  * 描述：
  * 作者：卜俊文
@@ -11,13 +15,12 @@ import java.util.Date;
 public class Test {
     public static void main(String args[]) {
         System.out.println("当前日期:" + JDateUtils.getCurrDate()); //"当前日期，默认格式：yyyy-MM-dd"
-        System.out.println("当前时间" + JDateUtils.getCurrTime()); //"当前时间，默认格式：HH:mm:ss"
-        System.out.println("自定义格式:" + JDateUtils.getDataFormat(JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS)); //"自定义格式，默认格式：yyyy-MM-dd HH:mm:ss"
+        System.out.println("自定义格式:" + JDateUtils.getCurrDate(JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS)); //"自定义格式，默认格式：yyyy-MM-dd HH:mm:ss"
         System.out.println("判断当天是上午下午还是晚上:" + JDateUtils.convertNowHour2CN(new Date())); //判断当天是上午下午还是晚上
         System.out.println("返回2个小时之后的日期" + JDateUtils.getNextHour(JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS, 2));//返回n个小时之后的日期
-        System.out.println("5个月之后的日期:" + JDateUtils.dateToString(JDateUtils.addMonth(new Date(), 5), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));//返回n个月之后的日期
-        System.out.println("9月2日增加2个月之后的日期：" + JDateUtils.dateToString(JDateUtils.addMonth(JDateUtils.stringToDate("2016-09-02 14:24:00", JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS), 2), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
-        System.out.println("9月2日增加1天：" + JDateUtils.dateToString(JDateUtils.addDay(new Date(), 1), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
+        System.out.println("5个月之后的日期:" + JDateUtils.dateToString(JDateUtils.addData(new Date(), 5, DATA_TYPE_MONTH), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));//返回n个月之后的日期
+        System.out.println("9月2日增加2个月之后的日期：" + JDateUtils.dateToString(JDateUtils.addData(JDateUtils.stringToDate("2016-09-02 14:24:00", JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS), 2, DATA_TYPE_MONTH), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
+        System.out.println("今天增加1天：" + JDateUtils.dateToString(JDateUtils.addData(new Date(), 1, DATA_TYPE_DAY), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
         System.out.println("获取指定毫秒数的对应星期：" + JDateUtils.getWeek(System.currentTimeMillis()));
         System.out.println("明天的日期：" + JDateUtils.getTomoData());
         System.out.println("今天的详细日期（带星期）:" + JDateUtils.StringData());//2016年9月2日 星期五
@@ -29,9 +32,13 @@ public class Test {
         System.out.println("今年第一天:" + JDateUtils.formatDate(JDateUtils.getCurrYearFirst()));
         System.out.println("今年最后一天：" + JDateUtils.formatDate(JDateUtils.getCurrYearLast()));
         System.out.println("判断是否是今天：" + JDateUtils.isTodayDate(JDateUtils.getTomoData()));
-        System.out.println("根据日期返回周几：" + JDateUtils.dayForWeek(JDateUtils.getTomoData()));
-        System.out.println("获取公历：" + JDateUtils.getGregorianCalendar(JDateUtils.getCurrDate()));
+        System.out.println("根据日期返回周几：" + JDateUtils.dayForWeek(JDateUtils.getTomoData(), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD));
         System.out.println("比较两个日期大于？小于？等于？：" + JDateUtils.compareDate(JDateUtils.getCurrDate(), JDateUtils.getTomoData())); //返回负1 代表第一个日期比第二个日期小
-        System.out.println("判断日期是否在星期五？:"+JDateUtils.isWorkingDays(JDateUtils.getCurrDate()));
+        System.out.println("判断日期是否在星期五？:" + JDateUtils.isWorkingDays(JDateUtils.getCurrDate()));
+        String startDayOfWeekNo = JDateUtils.getStartDayOfWeekNo(2016, 25);
+        System.out.println("获取2016年25周的日期开始时间？:" + startDayOfWeekNo);
+        String overDayOfWeekNo = JDateUtils.getEndDayOfWeekNo(2016, 25);
+        System.out.println("获取2016年25周的日期结束时间？:" + overDayOfWeekNo);
+        System.out.println("返回今天是第几周？:" + getWeekByYear());
     }
 }

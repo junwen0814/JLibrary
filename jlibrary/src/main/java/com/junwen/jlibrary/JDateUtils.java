@@ -23,6 +23,9 @@ public class JDateUtils {
         //年月日，无中文
         public static final String FORMAT_NONE_YYYY_MM_DD = "yyyy-MM-dd";
 
+        //年月
+        public static final String FORMAT_NONE_YYYY_MM = "yyyy-MM";
+
         //年月日，带中文
         public static final String FORMAT_Month_YYYY_MM_DD = "yyyy年MM月dd";
 
@@ -35,11 +38,20 @@ public class JDateUtils {
         //月日 小时分钟秒，无中文
         public static final String FORMAT_NONE_MM_DD_HH_MM_SS = "MM-dd HH:mm:ss";
 
+        //月日
+        public static final String FORMAT_NONE_MM_DD = "MM-dd";
+
         //月日 小时分钟秒，有中文
         public static final String FORMAT_MONTH_MM_DD_HH_MM_SS = "MM月dd HH:mm:ss";
 
         //小时分钟秒
         public static final String FORMAT_HH_MM_SS = "HH:mm:ss";
+
+        //分钟秒
+        public static final String FORMAT_MM_SS = "mm:ss";
+
+        //小时分钟
+        public static final String FORMAT_HH_MM = "HH:mm";
     }
 
     public final static String[] zodiacArray = {"猴", "鸡", "狗", "猪", "鼠", "牛", "虎",
@@ -51,37 +63,38 @@ public class JDateUtils {
     public final static int[] constellationDay = {20, 19, 21, 21, 21, 22, 23, 23, 23,
             24, 23, 22};
 
+    public static final String DATA_TYPE_YEAR = "data_type_year"; //年份类型
+
+    public static final String DATA_TYPE_MONTH = "data_type_month"; //月份类型
+
+    public static final String DATA_TYPE_DAY = "data_type_day"; //天数类型
+
+    public static final String DATA_TYPE_HOUR = "data_type_hour"; //小时类型
+
+    public static final String DATA_TYPE_MINUTE = "data_type_minute"; //分钟类型
+
+    public static final String DATA_TYPE_SECONDS = "data_type_seconds"; //秒类型
 
     /**
-     * 描述:获取当前日期
+     * 描述:获取当前日期,返回格式 yyyy-MM-dd HH:mm:ss
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/8/11 16:19
      */
     public static String getCurrDate() {
-        return new SimpleDateFormat(DataFormatType.FORMAT_NONE_YYYY_MM_DD).format(new Date());
+        return new SimpleDateFormat(DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS).format(new Date());
     }
 
     /**
-     * 描述:获取当前时间
+     * 描述:获取当前日期根据格式
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
-     * 创建时间: 2016/8/11 16:19
+     * 创建时间: 2016/11/3 8:39
      */
-    public static String getCurrTime() {
-        return new SimpleDateFormat(DataFormatType.FORMAT_HH_MM_SS).format(new Date());
+    public static String getCurrDate(String format) {
+        return new SimpleDateFormat(format).format(new Date());
     }
 
-    /**
-     * 描述:获取当前时间,根据指定的格式
-     * 作者:卜俊文
-     * 邮箱:344176791@qq.com
-     * 创建时间: 2016/8/11 16:19
-     */
-    public static String getDataFormat(String format) {
-        SimpleDateFormat df = new SimpleDateFormat(format);
-        return df.format(new Date());
-    }
 
     /**
      * 描述:String转Date
@@ -89,14 +102,13 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 10:25
      */
-    public static Date stringToDate(String strTime, String formatType) {
+    public static Date stringToDate(String string, String formatType) {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat(formatType);
             Date date = null;
-            date = formatter.parse(strTime);
+            date = formatter.parse(string);
             return date;
         } catch (Exception e) {
-
         }
         return null;
     }
@@ -107,8 +119,8 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 10:24
      */
-    public static String dateToString(Date data, String formatType) {
-        return new SimpleDateFormat(formatType).format(data);
+    public static String dateToString(Date data, String format) {
+        return new SimpleDateFormat(format).format(data);
     }
 
     /**
@@ -128,11 +140,11 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 10:22
      */
-    public static Date longToDate(long currentTime, String formatType)
+    public static Date longToDate(long currentTime, String format)
             throws ParseException {
         Date dateOld = new Date(currentTime); // 根据long类型的毫秒数生命一个date类型的时间
-        String sDateTime = dateToString(dateOld, formatType); // 把date类型的时间转换为string
-        Date date = stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
+        String sDateTime = dateToString(dateOld, format); // 把date类型的时间转换为string
+        Date date = stringToDate(sDateTime, format); // 把String类型转换为Date类型
         return date;
     }
 
@@ -142,10 +154,10 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 10:24
      */
-    public static String longToString(long currentTime, String formatType)
+    public static String longToString(long currentTime, String format)
             throws ParseException {
-        Date date = longToDate(currentTime, formatType); // long类型转成Date类型
-        String strTime = dateToString(date, formatType); // date类型转成String
+        Date date = longToDate(currentTime, format); // long类型转成Date类型
+        String strTime = dateToString(date, format); // date类型转成String
         return strTime;
     }
 
@@ -155,9 +167,9 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 10:26
      */
-    public static long stringToLong(String strTime, String formatType)
+    public static long stringToLong(String string, String format)
             throws ParseException {
-        Date date = stringToDate(strTime, formatType); // String类型转成date类型
+        Date date = stringToDate(string, format); // String类型转成date类型
         if (date == null) {
             return 0;
         } else {
@@ -214,37 +226,44 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/8/11 16:20
      */
-    public static String getNextHour(String format, int h) {
+    public static String getNextHour(String format, int hour) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         Date date = new Date();
-        date.setTime(date.getTime() + h * 60 * 60 * 1000);
+        date.setTime(date.getTime() + hour * 60 * 60 * 1000);
         return sdf.format(date);
     }
 
     /**
-     * 描述:在日期上增加数个整月
+     * 描述:在日期上增加年月日小时分钟秒，正数就是加，负数是减
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/8/11 16:20
      */
-    public static Date addMonth(Date date, int n) {
+    public static Date addData(Date date, int n, String datatype) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        cal.add(Calendar.MONTH, n);
-        return cal.getTime();
-
-    }
-
-    /**
-     * 描述: 在日期上增加天数
-     * 作者:卜俊文
-     * 邮箱:344176791@qq.com
-     * 创建时间: 2016/8/11 16:20
-     */
-    public static Date addDay(Date date, int n) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, n);
+        if (datatype.equals(DATA_TYPE_YEAR)) {
+            //年数
+            cal.add(Calendar.YEAR, n);
+        } else if (datatype.equals(DATA_TYPE_MONTH)) {
+            //月份
+            cal.add(Calendar.MONTH, n);
+        } else if (datatype.equals(DATA_TYPE_DAY)) {
+            //天数
+            cal.add(Calendar.DATE, n);
+        }else if (datatype.equals(DATA_TYPE_DAY)) {
+            //天数
+            cal.add(Calendar.DATE, n);
+        }else if(datatype.equals(DATA_TYPE_HOUR)){
+            //小时
+            cal.add(Calendar.HOUR, n);
+        }else if(datatype.equals(DATA_TYPE_MINUTE)){
+            //分钟
+            cal.add(Calendar.MINUTE, n);
+        }else if(datatype.equals(DATA_TYPE_SECONDS)){
+            //秒
+            cal.add(Calendar.SECOND, n);
+        }
         return cal.getTime();
     }
 
@@ -353,7 +372,6 @@ public class JDateUtils {
     public static long getMillis(String dateString) {
         String[] date = dateString.split("-");
         return getMillis(date[0], date[1], date[2]);
-
     }
 
     /**
@@ -651,9 +669,9 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 16:12
      */
-    public static String dayForWeek(String pTime) {
+    public static String dayForWeek(String pTime,String formattype) {
         String week = "";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat(formattype);
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(format.parse(pTime));
@@ -738,7 +756,6 @@ public class JDateUtils {
     }
 
 
-
     /**
      * 描述:当前日期是否在周一到周五
      * 作者:卜俊文
@@ -762,34 +779,69 @@ public class JDateUtils {
             flag = false;
         } else {
             flag = true;
-
         }
-
         return flag;
     }
-//    public static void main(String args[]) {
-//        System.out.println("当前日期:" + JDateUtils.getCurrDate()); //"当前日期，默认格式：yyyy-MM-dd"
-//        System.out.println("当前时间" + JDateUtils.getCurrTime()); //"当前时间，默认格式：HH:mm:ss"
-//        System.out.println("自定义格式:" + JDateUtils.getDataFormat(JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS)); //"自定义格式，默认格式：yyyy-MM-dd HH:mm:ss"
-//        System.out.println("判断当天是上午下午还是晚上:" + JDateUtils.convertNowHour2CN(new Date())); //判断当天是上午下午还是晚上
-//        System.out.println("返回2个小时之后的日期" + JDateUtils.getNextHour(JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS, 2));//返回n个小时之后的日期
-//        System.out.println("5个月之后的日期:" + JDateUtils.dateToString(JDateUtils.addMonth(new Date(), 5), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));//返回n个月之后的日期
-//        System.out.println("9月2日增加2个月之后的日期：" + JDateUtils.dateToString(JDateUtils.addMonth(JDateUtils.stringToDate("2016-09-02 14:24:00", JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS), 2), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
-//        System.out.println("9月2日增加1天：" + JDateUtils.dateToString(JDateUtils.addDay(new Date(), 1), JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD_HH_MM_SS));
-//        System.out.println("获取指定毫秒数的对应星期：" + JDateUtils.getWeek(System.currentTimeMillis()));
-//        System.out.println("明天的日期：" + JDateUtils.getTomoData());
-//        System.out.println("今天的详细日期（带星期）:" + JDateUtils.StringData());//2016年9月2日 星期五
-//        System.out.println("判断今天还是昨天还是后天：" + JDateUtils.getCustomStr(JDateUtils.getTomoData()));
-//        System.out.println("对比今天多少时间了，秒，天，年" + JDateUtils.getShortTime("2016-09-02 15:30:00")); //输入格式化必须是yyyy-MM-dd HH:mm:ss
-//        System.out.println("根据出生年日返回生肖：" + JDateUtils.date2Zodica(1995)); //返回猪
-//        System.out.println("根据月份和日期返回星座：" + JDateUtils.date2Constellation(2, 21)); //返回双鱼
-//        System.out.println("根据出生年份返回岁数：" + JDateUtils.date2Age(1995)); //返回21岁
-//        System.out.println("今年第一天:" + JDateUtils.formatDate(JDateUtils.getCurrYearFirst()));
-//        System.out.println("今年最后一天：" + JDateUtils.formatDate(JDateUtils.getCurrYearLast()));
-//        System.out.println("判断是否是今天：" + JDateUtils.isTodayDate(JDateUtils.getTomoData()));
-//        System.out.println("根据日期返回周几：" + JDateUtils.dayForWeek(JDateUtils.getTomoData()));
-//        System.out.println("获取公历：" + JDateUtils.getGregorianCalendar(JDateUtils.getCurrDate()));
-//        System.out.println("比较两个日期大于？小于？等于？：" + JDateUtils.compareDate(JDateUtils.getCurrDate(), JDateUtils.getTomoData())); //返回负1 代表第一个日期比第二个日期小
-//        System.out.println("判断日期是否在星期五？:"+JDateUtils.isWorkingDays(JDateUtils.getCurrDate()));
-//    }
+
+    /**
+    *描述:根据年和周，获取这周开始的时间
+    *作者:卜俊文
+    *邮箱:344176791@qq.com
+    *创建时间: 2016/11/3 11:41
+    */
+    public static String getStartDayOfWeekNo(int year, int weekNo) {
+        Calendar cal = getCalendarFormYear(year);
+        cal.set(Calendar.WEEK_OF_YEAR, weekNo);
+        String date = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH);
+        return calToDay(date);
+
+    }
+    
+    /**
+    *描述:根据年和周，获取这周结束的时间
+    *作者:卜俊文
+    *邮箱:344176791@qq.com
+    *创建时间: 2016/11/3 11:42
+    */
+    public static String getEndDayOfWeekNo(int year, int weekNo) {
+        Calendar cal = getCalendarFormYear(year);
+        cal.set(Calendar.WEEK_OF_YEAR, weekNo);
+        cal.add(Calendar.DAY_OF_WEEK, 6);
+        String date = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH);
+        return calToDay(date);
+    }
+
+    private static Calendar getCalendarFormYear(int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        cal.set(Calendar.YEAR, year);
+        return cal;
+    }
+
+    public static String calToDay(String calSource) {
+        String target = "";
+        try {
+            Date date = new SimpleDateFormat("yyyy-M-d").parse(calSource);
+            target = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return target;
+    }
+
+    /**
+    *描述:获取今天是今年的第几周
+    *作者:卜俊文
+    *邮箱:344176791@qq.com
+    *创建时间: 2016/11/3 11:43
+    */
+    public static int getWeekByYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);// 设置该周第一天为星期一
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek() + 6); // 设置最后一天是星期日
+        calendar.setTime(new Date());
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
+
 }
+

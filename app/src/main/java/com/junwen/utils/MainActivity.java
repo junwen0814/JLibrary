@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.junwen.jlibrary.JCheckPasswordUtils;
@@ -12,12 +13,16 @@ import com.junwen.utils.junmaster.R;
 public class MainActivity extends AppCompatActivity {
 
     private EditText password;
+    private ImageView img;
+    private ImageView imgs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         password = (EditText) findViewById(R.id.activity_main);
+        img = (ImageView) findViewById(R.id.activity_main_img);
+        imgs = (ImageView) findViewById(R.id.activity_main_imgs);
     }
 
     public void onCheckPass(View view) {
@@ -34,4 +39,5 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "极高", Toast.LENGTH_SHORT).show();
         }
     }
+
 }
