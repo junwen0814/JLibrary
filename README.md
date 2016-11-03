@@ -4,31 +4,21 @@
 
 ##使用方法：
 
-###Mavan：
+###JitPack：
 
 ####.build.gradle
 ```
 allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url "http://dl.bintray.com/junwen/maven"
-        }
-    }
-}
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
 ```
 ####app.build.gradle
 ```
 dependencies {
-    compile 'com.junwen.jlibrary:jlibrary:1.0.2'
-}
-```
-
-###Jcenter：
-####app.build.gradle
-```
-dependencies {
-  compile 'com.junwen.jlibrary:jlibrary:1.0.2'
+      compile 'com.github.junwen0814:JLibrary:v1.0.1'
 }
 ```
 
