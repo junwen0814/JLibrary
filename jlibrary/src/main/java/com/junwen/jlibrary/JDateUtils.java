@@ -737,8 +737,8 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 16:17
      */
-    public static int compareDate(String DATE1, String DATE2) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    public static int compareDate(String DATE1, String DATE2,String format) {
+        SimpleDateFormat df = new SimpleDateFormat(format);
         try {
             Date dt1 = df.parse(DATE1);
             Date dt2 = df.parse(DATE2);
