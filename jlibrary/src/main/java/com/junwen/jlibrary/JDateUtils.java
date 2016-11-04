@@ -239,7 +239,7 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/8/11 16:20
      */
-    public static Date addData(Date date, int n, String datatype) {
+    public static Date addOrDeleteDate(Date date, int n, String datatype) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         if (datatype.equals(DATA_TYPE_YEAR)) {
