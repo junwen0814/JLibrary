@@ -36,8 +36,8 @@ public class Test {
 //        System.out.println("返回今天是第几周？:" + getWeekByYear());
 
         String currTime = "07:44";
-        String s = JDateUtils.dateToString(JDateUtils.addData(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), -15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
-        String end = JDateUtils.dateToString(JDateUtils.addData(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), 15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
+        String s = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), -15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
+        String end = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), 15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
         System.out.println("15分钟之前：" + s);
         System.out.println("15分钟之前：" + end);
         System.out.println("当前时间是否大于8点：" + JDateUtils.compareDate(currTime, s, JDateUtils.DataFormatType.FORMAT_HH_MM));
