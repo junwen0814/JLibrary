@@ -35,19 +35,21 @@ public class Test {
 //        System.out.println("获取2016年25周的日期结束时间？:" + overDayOfWeekNo);
 //        System.out.println("返回今天是第几周？:" + getWeekByYear());
 
-        String currTime = "07:44";
-        String s = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), -15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
-        String end = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), 15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
-        System.out.println("15分钟之前：" + s);
-        System.out.println("15分钟之前：" + end);
-        System.out.println("当前时间是否大于8点：" + JDateUtils.compareDate(currTime, s, JDateUtils.DataFormatType.FORMAT_HH_MM));
-        int i = JDateUtils.compareDate(currTime, s, JDateUtils.DataFormatType.FORMAT_HH_MM);
-        int compareDate = JDateUtils.compareDate(currTime, end, JDateUtils.DataFormatType.FORMAT_HH_MM);
-        if(i == 1 || i == 0){
-            if(compareDate == -1 || compareDate == 0){
-                System.out.println("通过");
-            }
-        }
+//        String currTime = "07:44";
+//        String s = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), -15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
+//        String end = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate("08:00", JDateUtils.DataFormatType.FORMAT_HH_MM), 15, JDateUtils.DATA_TYPE_MINUTE), JDateUtils.DataFormatType.FORMAT_HH_MM);
+//        System.out.println("15分钟之前：" + s);
+//        System.out.println("15分钟之前：" + end);
+//        System.out.println("当前时间是否大于8点：" + JDateUtils.compareDate(currTime, s, JDateUtils.DataFormatType.FORMAT_HH_MM));
+//        int i = JDateUtils.compareDate(currTime, s, JDateUtils.DataFormatType.FORMAT_HH_MM);
+//        int compareDate = JDateUtils.compareDate(currTime, end, JDateUtils.DataFormatType.FORMAT_HH_MM);
+//        if(i == 1 || i == 0){
+//            if(compareDate == -1 || compareDate == 0){
+//                System.out.println("通过");
+//            }
+//        }
 //        Date end = JDateUtils.addData(JDateUtils.stringToDate(beginTime, JDateUtils.DataFormatType.FORMAT_MM_SS), 15, JDateUtils.DATA_TYPE_MINUTE);
+//        int compareDate = JDateUtils.compareDate("08:10", "09:00", JDateUtils.DataFormatType.FORMAT_HH_MM);
+//        System.out.println(compareDate+"");
     }
 }

@@ -10,25 +10,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.junwen.utils.MainActivity">
 
-    <EditText
-        android:id="@+id/activity_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="输入要验证的文字" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onCheckPass"
-        android:text="检查" />
-
-    <ImageView
-        android:id="@+id/activity_main_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:id="@+id/activity_main_imgs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </LinearLayout>
