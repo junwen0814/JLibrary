@@ -51,5 +51,6 @@ public class Test {
 //        Date end = JDateUtils.addData(JDateUtils.stringToDate(beginTime, JDateUtils.DataFormatType.FORMAT_MM_SS), 15, JDateUtils.DATA_TYPE_MINUTE);
 //        int compareDate = JDateUtils.compareDate("08:10", "09:00", JDateUtils.DataFormatType.FORMAT_HH_MM);
 //        System.out.println(compareDate+"");
+        JDateUtils.getWeekNumByYear(2016);
     }
 }
