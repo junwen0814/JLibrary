@@ -1,17 +1,30 @@
 package com.junwen.jlibrary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -255,4 +268,139 @@ public class JNetWorkUtils {
             return false;
         }
     }
+
+    /**
+     * 描述:打开网络设置界面
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:09
+     */
+    public static void openWirelessSettings(Context context) {
+        if (android.os.Build.VERSION.SDK_INT > 10) {
+            context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+        } else {
+            context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+        }
+    }
+
+    /**
+     *
+     * <p>需系统应用 需添加权限{@code <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>}</p>
+     *
+     * @param context 上下文
+     * @param enabled {@code true}: 打开<br>{@code false}: 关闭
+     */
+
+    /**
+     * 描述:打开或关闭移动数据
+     * <p>需系统应用 需添加权限{@code <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>}</p>
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:10
+     */
+    public static void setDataEnabled(Context context, boolean enabled) {
+        try {
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            Method setMobileDataEnabledMethod = tm.getClass().getDeclaredMethod("setDataEnabled", boolean.class);
+            if (null != setMobileDataEnabledMethod) {
+                setMobileDataEnabledMethod.invoke(tm, enabled);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     * <p>需添加权限 {@code <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>}</p>
+     *
+     * @param context 上下文
+     * @param enabled {@code true}: 打开<br>{@code false}: 关闭
+     */
+
+    /**
+     * 描述:打开或关闭wifi
+     * <p>需添加权限 {@code <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>}</p>
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:10
+     */
+    public static void setWifiEnabled(Context context, boolean enabled) {
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (enabled) {
+            if (!wifiManager.isWifiEnabled()) {
+                wifiManager.setWifiEnabled(true);
+            }
+        } else {
+            if (wifiManager.isWifiEnabled()) {
+                wifiManager.setWifiEnabled(false);
+            }
+        }
+    }
+
+
+    /**
+     * 描述:获取IP地址
+     * <p>需添加权限 {@code <uses-permission android:name="android.permission.INTERNET"/>}</p>
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:11
+     */
+    public static String getIPAddress(boolean useIPv4) {
+        try {
+            for (Enumeration<NetworkInterface> nis = NetworkInterface.getNetworkInterfaces(); nis.hasMoreElements(); ) {
+                NetworkInterface ni = nis.nextElement();
+                // 防止小米手机返回10.0.2.15
+                if (!ni.isUp()) continue;
+                for (Enumeration<InetAddress> addresses = ni.getInetAddresses(); addresses.hasMoreElements(); ) {
+                    InetAddress inetAddress = addresses.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        String hostAddress = inetAddress.getHostAddress();
+                        boolean isIPv4 = hostAddress.indexOf(':') < 0;
+                        if (useIPv4) {
+                            if (isIPv4) return hostAddress;
+                        } else {
+                            if (!isIPv4) {
+                                int index = hostAddress.indexOf('%');
+                                return index < 0 ? hostAddress.toUpperCase() : hostAddress.substring(0, index).toUpperCase();
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 描述:获取域名ip地址
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:11
+     */
+    public static String getDomainAddress(final String domain) {
+        try {
+            ExecutorService exec = Executors.newCachedThreadPool();
+            Future<String> fs = exec.submit(new Callable<String>() {
+                @Override
+                public String call() throws Exception {
+                    InetAddress inetAddress;
+                    try {
+                        inetAddress = InetAddress.getByName(domain);
+                        return inetAddress.getHostAddress();
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            });
+            return fs.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -3,9 +3,11 @@ package com.junwen.jlibrary;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -915,6 +917,29 @@ public class JDateUtils {
 
         //分别取得当前日期的年、月、日
         return dateToString(cal.getTime(),DataFormatType.FORMAT_NONE_YYYY_MM_DD);
+    }
+
+    /**
+    *描述:根据开始时间和结束时间，返回从开始到结束的所有年份
+    *作者:卜俊文
+    *邮箱:344176791@qq.com
+    *创建时间: 2016/11/23 17:33
+    */
+    public static List<String> getStartYearToEntYear(String startYear, String entYear) {
+        List<String> result = new ArrayList<>();
+        result.add(startYear);
+        //先判断start和end是否是相同时间
+        if (JDateUtils.compareDate(startYear, entYear, "yyyy") == 0) {
+            return result;
+        }
+        while (JDateUtils.compareDate(JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate(startYear, "yyyy"), 1, JDateUtils.DATA_TYPE_YEAR), "yyyy"), entYear, "yyyy") == -1) {
+            //判断
+            String dateToString = JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate(startYear, "yyyy"), 1, JDateUtils.DATA_TYPE_YEAR), "yyyy");
+            result.add(dateToString);
+            startYear = dateToString;
+        }
+        result.add(JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate(startYear, "yyyy"), 1, JDateUtils.DATA_TYPE_YEAR), "yyyy"));
+        return result;
     }
 }
 

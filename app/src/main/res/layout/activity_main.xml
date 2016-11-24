@@ -7,8 +7,10 @@
     android:orientation="vertical"
     tools:context="com.junwen.utils.MainActivity">
 
-    <EditText
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="输入什么" />
+        android:text="打开啊"
+        android:onClick="onItemClick"
+        />
 </LinearLayout>

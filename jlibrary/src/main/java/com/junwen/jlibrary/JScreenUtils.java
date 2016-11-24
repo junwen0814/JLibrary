@@ -1,14 +1,17 @@
 package com.junwen.jlibrary;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -160,11 +163,11 @@ public class JScreenUtils {
     }
 
     /**
-    *描述:切换到全屏,切换到全屏时，底部的虚拟按键仍然是显示的。次方法可多次调用用于切换,播放器界面经常会用到
-    *作者:卜俊文
-    *邮箱:344176791@qq.com
-    *创建时间: 2016/11/3 11:01
-    */
+     * 描述:切换到全屏,切换到全屏时，底部的虚拟按键仍然是显示的。次方法可多次调用用于切换,播放器界面经常会用到
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/3 11:01
+     */
     public static void cutFullScreen(Activity activity) {
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -301,5 +304,82 @@ public class JScreenUtils {
         resolver.notifyChange(uri, null);
     }
 
+
+    /**
+     * 描述:设置屏幕为横屏
+     * <p>还有一种就是在Activity中加属性android:screenOrientation="landscape"</p>
+     * <p>不设置Activity的android:configChanges时，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行两次</p>
+     * <p>设置Activity的android:configChanges="orientation"时，切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次</p>
+     * <p>设置Activity的android:configChanges="orientation|keyboardHidden|screenSize"（4.0以上必须带最后一个参数）时
+     * 切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static void setLandscape(Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    }
+
+    /**
+     * 描述:设置屏幕为竖屏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static void setPortrait(Activity activity) {
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * 描述:判断是否横屏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * 描述:判断是否竖屏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static boolean isPortrait(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    /**
+     * 描述:获取屏幕旋转角度
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static int getScreenRotation(Activity activity) {
+        switch (activity.getWindowManager().getDefaultDisplay().getRotation()) {
+            default:
+            case Surface.ROTATION_0:
+                return 0;
+            case Surface.ROTATION_90:
+                return 90;
+            case Surface.ROTATION_180:
+                return 180;
+            case Surface.ROTATION_270:
+                return 270;
+        }
+    }
+
+    /**
+     * 描述:判断是否锁屏
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/24 15:17
+     */
+    public static boolean isScreenLock(Context context) {
+        KeyguardManager km = (KeyguardManager) context
+                .getSystemService(Context.KEYGUARD_SERVICE);
+        return km.inKeyguardRestrictedInputMode();
+    }
 
 }
