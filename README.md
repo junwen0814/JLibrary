@@ -18,7 +18,7 @@ allprojects {
 ####app.build.gradle
 ```
 dependencies {
-      compile 'com.github.junwen0814:JLibrary:v1.0.8'
+      compile 'com.github.junwen0814:JLibrary:v1.0.9'
 }
 ```
 
