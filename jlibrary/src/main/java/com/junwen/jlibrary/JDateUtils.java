@@ -28,6 +28,9 @@ public class JDateUtils {
         //年月
         public static final String FORMAT_NONE_YYYY_MM = "yyyy-MM";
 
+        //年
+        public static final String FORMAT_NONE_YYYY = "yyyy";
+
         //年月日，带中文
         public static final String FORMAT_Month_YYYY_MM_DD = "yyyy年MM月dd";
 
@@ -253,16 +256,16 @@ public class JDateUtils {
         } else if (datatype.equals(DATA_TYPE_DAY)) {
             //天数
             cal.add(Calendar.DATE, n);
-        }else if (datatype.equals(DATA_TYPE_DAY)) {
+        } else if (datatype.equals(DATA_TYPE_DAY)) {
             //天数
             cal.add(Calendar.DATE, n);
-        }else if(datatype.equals(DATA_TYPE_HOUR)){
+        } else if (datatype.equals(DATA_TYPE_HOUR)) {
             //小时
             cal.add(Calendar.HOUR, n);
-        }else if(datatype.equals(DATA_TYPE_MINUTE)){
+        } else if (datatype.equals(DATA_TYPE_MINUTE)) {
             //分钟
             cal.add(Calendar.MINUTE, n);
-        }else if(datatype.equals(DATA_TYPE_SECONDS)){
+        } else if (datatype.equals(DATA_TYPE_SECONDS)) {
             //秒
             cal.add(Calendar.SECOND, n);
         }
@@ -671,7 +674,7 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 16:12
      */
-    public static String dayForWeek(String pTime,String formattype) {
+    public static String dayForWeek(String pTime, String formattype) {
         String week = "";
         SimpleDateFormat format = new SimpleDateFormat(formattype);
         Calendar c = Calendar.getInstance();
@@ -739,7 +742,7 @@ public class JDateUtils {
      * 邮箱:344176791@qq.com
      * 创建时间: 2016/9/2 16:17
      */
-    public static int compareDate(String DATE1, String DATE2,String format) {
+    public static int compareDate(String DATE1, String DATE2, String format) {
         SimpleDateFormat df = new SimpleDateFormat(format);
         try {
             Date dt1 = df.parse(DATE1);
@@ -786,11 +789,11 @@ public class JDateUtils {
     }
 
     /**
-    *描述:根据年和周，获取这周开始的时间
-    *作者:卜俊文
-    *邮箱:344176791@qq.com
-    *创建时间: 2016/11/3 11:41
-    */
+     * 描述:根据年和周，获取这周开始的时间
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/3 11:41
+     */
     public static String getStartDayOfWeekNo(int year, int weekNo) {
         Calendar cal = getCalendarFormYear(year);
         cal.set(Calendar.WEEK_OF_YEAR, weekNo);
@@ -798,13 +801,13 @@ public class JDateUtils {
         return calToDay(date);
 
     }
-    
+
     /**
-    *描述:根据年和周，获取这周结束的时间
-    *作者:卜俊文
-    *邮箱:344176791@qq.com
-    *创建时间: 2016/11/3 11:42
-    */
+     * 描述:根据年和周，获取这周结束的时间
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/3 11:42
+     */
     public static String getEndDayOfWeekNo(int year, int weekNo) {
         Calendar cal = getCalendarFormYear(year);
         cal.set(Calendar.WEEK_OF_YEAR, weekNo);
@@ -832,11 +835,11 @@ public class JDateUtils {
     }
 
     /**
-    *描述:获取今天是今年的第几周
-    *作者:卜俊文
-    *邮箱:344176791@qq.com
-    *创建时间: 2016/11/3 11:43
-    */
+     * 描述:获取今天是今年的第几周
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/3 11:43
+     */
     public static int getWeekByYear() {
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);// 设置该周第一天为星期一
@@ -846,11 +849,10 @@ public class JDateUtils {
     }
 
     /**
-     *
      * @方法名:
      * @参数：
      * @返回值：
-     * @描述:  秒转时分秒
+     * @描述: 秒转时分秒
      * @作者： junwen
      * @创建日期 2016/11/8 15:41
      */
@@ -877,6 +879,7 @@ public class JDateUtils {
         }
         return timeStr;
     }
+
     public static String unitFormat(int i) {
         String retStr = null;
         if (i >= 0 && i < 10)
@@ -885,13 +888,14 @@ public class JDateUtils {
             retStr = "" + i;
         return retStr;
     }
-    public static int getWeekNumByYear(final int year){
-        if(year<1900 || year >9999){
+
+    public static int getWeekNumByYear(final int year) {
+        if (year < 1900 || year > 9999) {
             throw new NullPointerException("年度必须大于等于1900年小于等于9999年");
         }
         int result = 52;//每年至少有52个周 ，最多有53个周。
-        String date = getYearWeekFirstDay(year,53);
-        if(date.substring(0, 4).equals(year+"")){ //判断年度是否相符，如果相符说明有53个周。
+        String date = getYearWeekFirstDay(year, 53);
+        if (date.substring(0, 4).equals(year + "")) { //判断年度是否相符，如果相符说明有53个周。
             result = 53;
         }
         return result;
@@ -899,12 +903,13 @@ public class JDateUtils {
 
     /**
      * 计算某年某周的开始日期
+     *
      * @param yearNum 格式 yyyy  ，必须大于1900年度 小于9999年
      * @param weekNum 1到52或者53
      * @return 日期，格式为yyyy-MM-dd
      */
-    public static String getYearWeekFirstDay(int yearNum,int weekNum)  {
-        if(yearNum<1900 || yearNum >9999){
+    public static String getYearWeekFirstDay(int yearNum, int weekNum) {
+        if (yearNum < 1900 || yearNum > 9999) {
             throw new NullPointerException("年度必须大于等于1900年小于等于9999年");
         }
         Calendar cal = Calendar.getInstance();
@@ -916,15 +921,15 @@ public class JDateUtils {
         cal.set(Calendar.WEEK_OF_YEAR, weekNum);
 
         //分别取得当前日期的年、月、日
-        return dateToString(cal.getTime(),DataFormatType.FORMAT_NONE_YYYY_MM_DD);
+        return dateToString(cal.getTime(), DataFormatType.FORMAT_NONE_YYYY_MM_DD);
     }
 
     /**
-    *描述:根据开始时间和结束时间，返回从开始到结束的所有年份
-    *作者:卜俊文
-    *邮箱:344176791@qq.com
-    *创建时间: 2016/11/23 17:33
-    */
+     * 描述:根据开始时间和结束时间，返回从开始到结束的所有年份
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/11/23 17:33
+     */
     public static List<String> getStartYearToEntYear(String startYear, String entYear) {
         List<String> result = new ArrayList<>();
         result.add(startYear);
@@ -939,6 +944,26 @@ public class JDateUtils {
             startYear = dateToString;
         }
         result.add(JDateUtils.dateToString(JDateUtils.addOrDeleteDate(JDateUtils.stringToDate(startYear, "yyyy"), 1, JDateUtils.DATA_TYPE_YEAR), "yyyy"));
+        return result;
+    }
+
+    /**
+     * 描述:String日期格式化成另一种格式的
+     * 作者:卜俊文
+     * 邮箱:344176791@qq.com
+     * 创建时间: 2016/12/2 9:53
+     */
+    public static String stringFormat(String string, String defaultFormat, String targerFormat) {
+        String result = "";
+        SimpleDateFormat formatter = new SimpleDateFormat(defaultFormat);
+        SimpleDateFormat tartMatter = new SimpleDateFormat(targerFormat);
+        try {
+            Date date = formatter.parse(string);
+            result = tartMatter.format(date);
+            return result;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 }

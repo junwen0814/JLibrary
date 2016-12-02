@@ -260,4 +260,33 @@ public class JFileUtils {
         }//end of while
         inZip.close();
     }//end of func
+
+    /**
+     * 根据文件路径获取文件
+     *
+     * @param filePath 文件路径
+     * @return 文件
+     */
+    public static File getFileByPath(String filePath) {
+        return JStringUtils.isSpace(filePath) ? null : new File(filePath);
+    }
+    /**
+     * 判断文件是否存在
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(String filePath) {
+        return isFileExists(getFileByPath(filePath));
+    }
+
+    /**
+     * 判断文件是否存在
+     *
+     * @param file 文件
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(File file) {
+        return file != null && file.exists();
+    }
 }

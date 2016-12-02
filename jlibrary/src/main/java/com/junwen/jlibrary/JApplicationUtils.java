@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -240,6 +241,23 @@ public class JApplicationUtils {
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(file, "application/vnd.android.package-archive");
         context.startActivity(intent);
+    }
+
+    /**
+     * 静默安装App
+     * <p>非root需添加权限 {@code <uses-permission android:name="android.permission.INSTALL_PACKAGES" />}</p>
+     *
+     * @param context  上下文
+     * @param filePath 文件路径
+     * @return {@code true}: 安装成功<br>{@code false}: 安装失败
+     */
+    public static boolean installAppSilent(Context context, String filePath) {
+        File file = JFileUtils.getFileByPath(filePath);
+        if (!JFileUtils.isFileExists(file)) return false;
+        String command = "LD_LIBRARY_PATH=/vendor/lib:/system/lib pm install " + filePath;
+        Log.e("error:",filePath);
+        JShellUtils.CommandResult commandResult = JShellUtils.execCmd(command, !isSystemApp(context), true);
+        return commandResult.successMsg != null && commandResult.successMsg.toLowerCase().contains("success");
     }
 
     /**
@@ -710,5 +728,43 @@ public class JApplicationUtils {
         } catch (ClassNotFoundException e) {
             return "SystemProperties class is not found";
         }
+    }
+    /**
+     * 判断App是否是系统应用
+     *
+     * @param context 上下文
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isSystemApp(Context context) {
+        return isSystemApp(context, context.getPackageName());
+    }
+
+    /**
+     * 判断App是否是系统应用
+     *
+     * @param context     上下文
+     * @param packageName 包名
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    public static boolean isSystemApp(Context context, String packageName) {
+        if (isSpace(packageName)) return false;
+        try {
+            PackageManager pm = context.getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(packageName, 0);
+            return ai != null && (ai.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 判断字符串是否为null或全为空格
+     *
+     * @param s 待校验字符串
+     * @return {@code true}: null或全空格<br> {@code false}: 不为null且不全空格
+     */
+    public static boolean isSpace(String s) {
+        return (s == null || s.trim().length() == 0);
     }
 }

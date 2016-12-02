@@ -34,6 +34,7 @@ public class Test {
 //        String overDayOfWeekNo = JDateUtils.getEndDayOfWeekNo(2016, 25);
 //        System.out.println("获取2016年25周的日期结束时间？:" + overDayOfWeekNo);
 //        System.out.println("返回今天是第几周？:" + getWeekByYear());
+        System.out.println(JDateUtils.stringFormat("2010-08-14 08:30:30", "yyyy-MM-dd", "yyyy-MM-dd"));
     }
 
 
