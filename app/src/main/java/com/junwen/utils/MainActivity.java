@@ -16,5 +16,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onItemClick(View view) {
+//        Log.e("onItemClick", "编码后0:" + );
+//        Log.e("onItemClick", "编码后1:" + new String(Base64.decode(strBase64, Base64.DEFAULT)));
     }
 }
