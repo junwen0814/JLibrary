@@ -1,7 +1,5 @@
 package com.junwen.jlibrary;
 
-import android.util.Base64;
-
 /**
  * 描述：
  * 作者：卜俊文
@@ -37,10 +35,13 @@ public class Test {
 //        System.out.println("获取2016年25周的日期结束时间？:" + overDayOfWeekNo);
 //        System.out.println("返回今天是第几周？:" + getWeekByYear());
 //        System.out.println(JDateUtils.stringFormat("2010-08-14 08:30:30", "yyyy-MM-dd", "yyyy-MM-dd"));
-        String content = "啊哈";
-        String strBase64 = new String(Base64.encode(content.getBytes(), Base64.DEFAULT));
-        System.out.println("编码后:" + strBase64);
+//        int weekByDate = getWeekByDate("2017-01-01", JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD);
+//        System.out.println(weekByDate + "");
+       System.out.println(JDateUtils.getWeekFirstDate(2017,1));
+        System.out.println(JDateUtils.getWeekLastDate(2017,1));
+//        DateTime dateTime = new DateTime("2017");
+//        DateTime dateTime1 = dateTime.weekyear().getDateTime().withTimeAtStartOfDay();
+//        System.out.println(dateTime1.toString());
+//        System.out.println(getWeekFirstDate(2017,1));
     }
-
-
 }

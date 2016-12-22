@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import static com.junwen.jlibrary.JDateUtils.DataFormatType.FORMAT_NONE_YYYY_MM_DD;
+
 /**
  * 描述:时间工具类
  * 作者:卜俊文
@@ -789,31 +791,35 @@ public class JDateUtils {
     }
 
     /**
-     * 描述:根据年和周，获取这周开始的时间
+     * 描述:某年某周的第一天日期
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
-     * 创建时间: 2016/11/3 11:41
+     * 创建时间: 2016/12/22 16:24
      */
-    public static String getStartDayOfWeekNo(int year, int weekNo) {
-        Calendar cal = getCalendarFormYear(year);
-        cal.set(Calendar.WEEK_OF_YEAR, weekNo);
-        String date = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH);
-        return calToDay(date);
-
+    public static String getWeekFirstDate(int year, int week) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);// 设置年份
+        cal.set(Calendar.WEEK_OF_YEAR, week);// 设置周
+        cal.setFirstDayOfWeek(Calendar.MONDAY);// 设置该周第一天为星期一
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek()); // 设置最后一天是星期日
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_NONE_YYYY_MM_DD);
+        return sdf.format(cal.getTime());
     }
 
     /**
-     * 描述:根据年和周，获取这周结束的时间
+     * 描述:获取某年某周的最后一天
      * 作者:卜俊文
      * 邮箱:344176791@qq.com
-     * 创建时间: 2016/11/3 11:42
+     * 创建时间: 2016/12/22 16:23
      */
-    public static String getEndDayOfWeekNo(int year, int weekNo) {
-        Calendar cal = getCalendarFormYear(year);
-        cal.set(Calendar.WEEK_OF_YEAR, weekNo);
-        cal.add(Calendar.DAY_OF_WEEK, 6);
-        String date = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DAY_OF_MONTH);
-        return calToDay(date);
+    public static String getWeekLastDate(int year, int week) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);// 设置年份
+        cal.set(Calendar.WEEK_OF_YEAR, week);// 设置周
+        cal.setFirstDayOfWeek(Calendar.MONDAY);// 设置该周第一天为星期一
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek() + 6); // 设置最后一天是星期日
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_NONE_YYYY_MM_DD);
+        return sdf.format(cal.getTime());
     }
 
     private static Calendar getCalendarFormYear(int year) {
@@ -921,7 +927,7 @@ public class JDateUtils {
         cal.set(Calendar.WEEK_OF_YEAR, weekNum);
 
         //分别取得当前日期的年、月、日
-        return dateToString(cal.getTime(), DataFormatType.FORMAT_NONE_YYYY_MM_DD);
+        return dateToString(cal.getTime(), FORMAT_NONE_YYYY_MM_DD);
     }
 
     /**
